@@ -80,7 +80,8 @@ func (r *ProjectResource) Schema(ctx context.Context, req resource.SchemaRequest
 				Required:            true,
 			},
 			"database_password": schema.StringAttribute{
-				MarkdownDescription: "Password for the project database. This value is persisted in Terraform state in plaintext; " +
+				MarkdownDescription: "Password for the project database. Exactly one of `database_password` or " +
+					"`database_password_wo` must be set. This value is persisted in Terraform state in plaintext; " +
 					"prefer `database_password_wo` to keep it out of state.",
 				Optional:  true,
 				Sensitive: true,
@@ -91,8 +92,9 @@ func (r *ProjectResource) Schema(ctx context.Context, req resource.SchemaRequest
 			},
 			"database_password_wo": schema.StringAttribute{
 				MarkdownDescription: "Write-only password for the project database, for example `ephemeral.random_password.db.result`. " +
-					"Unlike `database_password` this value is never persisted to Terraform state. Must be paired with " +
-					"`database_password_wo_version`, which is what triggers a rotation.",
+					"Exactly one of `database_password` or `database_password_wo` must be set. Unlike `database_password` " +
+					"this value is never persisted to Terraform state. Must be paired with `database_password_wo_version`, " +
+					"which is what triggers a rotation.",
 				Optional:  true,
 				Sensitive: true,
 				WriteOnly: true,
